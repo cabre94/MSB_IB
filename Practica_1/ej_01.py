@@ -18,9 +18,9 @@ sns.set()
 
 SAVE_PATH = "Figuras/Ej_01"
 
-# CI = np.linspace(-3,2,16) # Con esto y K = 1 la cosa explota lindo
-CI = np.linspace(-3, 2, 21)  # Las condiciones iniciales
-K = 1  # El valor de K creo que no importa mucho
+# Constantes
+CI = np.linspace(0, 2, 11)  # Las condiciones iniciales, solo con sentido si >=0
+K = 1.0  # El valor de K creo que no importa mucho
 iteraciones = 15  # Cantidad de iteraciones
 t = np.array(list(range(iteraciones + 1)))
 
@@ -33,35 +33,69 @@ def BHEEcExacta(n0, t, r, K):
 
 # Funcion para hacer una iteracion del modelo de Beverton-Holt
 def BevertonHolt(n_t, r, K):
-    return (r * n_t) / (1 + ((r - 1) / K) * n_t)
+    return (r * n_t) / (1 + ((r - 1.0) / K) * n_t)
 
 
 # Funcion para hacer un barrido en las condiciones iniciales, fijado r y K
 def barridoEnCI(r, K):
+
     for n_0 in CI:
         n_t = np.array([n_0])
 
         for i in range(iteraciones):
 
-            n_next = BevertonHolt(n_t[-1], 0.5, K)
+            n_next = BevertonHolt(n_t[-1], r, K)
             n_t = np.append(n_t, n_next)
 
-        plt.plot(t, n_t, label=n_0)
+        plt.plot(t, n_t, "--.", label=n_0)
+    file_path = os.path.join(SAVE_PATH, "Mapeo_r={}".format(r))
+    plt.xlabel("t")
+    plt.ylabel(r"$n_{t}$")
     plt.tight_layout()
-    plt.show()
+    plt.savefig(file_path, format="pdf")
+    plt.close()
 
-
-def barridoEnCiExacto(r, K):
+    # Ahora lo hago con la ec exacta, pero creo que es al pedo
     for n_0 in CI:
-
         curva = BHEEcExacta(n_0, t, r, K)
+        plt.plot(t, curva, "--.", label="n_0")
 
-        plt.plot(t, curva, label="n_0")
+    file_path = os.path.join(SAVE_PATH, "Exacta_r={}".format(r))
+    plt.xlabel("t")
+    plt.ylabel(r"$n(t)$")
     plt.tight_layout()
-    plt.show()
+    plt.savefig(file_path, format="pdf")
+    plt.close()
 
+
+def coweb(r, K):
+    n = np.linspace(0, 2, 1000)
+    f_n = BevertonHolt(n, r, K)
+
+    plt.plot(n, f_n, "-", label=r"$f(x)$")
+    plt.plot([0, 2], [0, 2], label="Identidad")
+
+    file_path = os.path.join(SAVE_PATH, "Coweb_r={}".format(r))
+    plt.xlabel("x")
+    plt.ylabel(r"$f(x)$")
+    plt.legend(loc="best")
+    plt.tight_layout()
+    plt.savefig(file_path, format="pdf")
+    plt.close()
+
+
+"""
+Segun https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3759145/
+r > 1 y K > 0
+"""
 
 if __name__ == "__main__":
 
     if not os.path.exists(SAVE_PATH):
         os.makedirs(SAVE_PATH)
+
+    rs = [1.0, 1.5, 2.0, 2.5, 3.5, 5.0, 10.0]
+
+    for r in rs:
+        barridoEnCI(r, K)
+        coweb(r, K)
