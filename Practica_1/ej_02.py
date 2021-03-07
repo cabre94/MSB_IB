@@ -34,44 +34,6 @@ def aproximacion(t, epsi, C=1):
 
     return 1 + pT * sT
 
-n = 10001  # Numero de iteraciones
-t = np.linspace(0, 50, n)
-
-rs = [0.3, 1.2, 2.0]
-T = 1.0
-K = 10.0
-
-for r in rs:
-
-    N = np.zeros_like(t)
-    N_delay = np.zeros_like(t)
-    N_delay[t < T] = 2.0  # Del enunciado del ejercicio
-    N_delay = N_delay[N_delay != 0]
-
-    n0 = 2.0
-    N[0] = n0
-
-    for i in range(1, n):
-
-        tspan = [t[i - 1], t[i]]
-
-        nn = odeint(model, n0, tspan, args=(r, K, N_delay[i]))
-
-        N[i] = nn[1]
-        N_delay = np.append(N_delay, nn[1])
-
-        # Actualizo la cond. inicial para la siguiente iteracion
-        n0 = nn[1]
-
-    plt.plot(t, N, linewidth=2)
-    # plt.plot(t,N,'b-', linewidth=2)
-    # plt.plot(t,N_delay[:len(t)],'r-', linewidth=2)
-    # plt.plot(t,y,'b--', linewidth=2)
-    plt.xlabel("t")
-    # plt.legend(['N(t)','N(t-T)'])
-
-plt.show()
-
 # Funcion que resuelve la ec. diferencial para un r, T y K dados
 def solve(r, T, K, ite=10001, Nlim=50, N0=2):
 
@@ -94,9 +56,15 @@ def solve(r, T, K, ite=10001, Nlim=50, N0=2):
     
     return [N, N_delay, t]
 
-kk = solve(0.3, 1, 10)
-plt.plot(kk[2], kk[0])
-plt.show()
+def a():
+    kk1 = solve(r=0.3, T=1, K=10)
+    kk2 = solve(r=1.2, T=1, K=10)
+    kk3 = solve(r=2.0, T=1, K=10)
+    plt.figure()
+    plt.plot(kk1[2], kk1[0])
+    plt.plot(kk2[2], kk2[0])
+    plt.plot(kk3[2], kk3[0])
+    # plt.show()
 
 """
 Segunda parte del ejercicio
@@ -107,6 +75,7 @@ Segunda parte del ejercicio
 
 
 epsi = 1 - np.pi / (2*2)
+plt.figure()
 plt.plot(t, N, label='Numerico')
 plt.plot(t, aproximacion(t, epsi), label=r'$\varepsilon={:.2f}$'.format(epsi))
 plt.plot(t, aproximacion(t, 1e-5), label=r'$\varepsilon=10^{-5}$')
