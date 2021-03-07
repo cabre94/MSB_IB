@@ -29,7 +29,9 @@ def model(N, t, r, K, N_T):
 # Solucion aproximada
 def aproximacion(t, epsi, C=1):
 
+    # Primer termino del choclo
     pT = C * np.exp((epsi * t) / (1 + np.pi * np.pi * 0.25))
+    # Segundo termino del choclo
     sT = np.cos(t * (1 - ((epsi * np.pi) / (2 * (1 + np.pi * np.pi * 0.25)))))
 
     return 1 + pT * sT
@@ -56,15 +58,23 @@ def solve(r, T, K, ite=10001, Nlim=50, N0=2):
     
     return [N, N_delay, t]
 
+# Funcion para resolver la primera parte del ejercicio, usando distintos
+# parametros para ver los distintos z
 def a():
     kk1 = solve(r=0.3, T=1, K=10)
     kk2 = solve(r=1.2, T=1, K=10)
     kk3 = solve(r=2.0, T=1, K=10)
+    
     plt.figure()
-    plt.plot(kk1[2], kk1[0])
-    plt.plot(kk2[2], kk2[0])
-    plt.plot(kk3[2], kk3[0])
-    # plt.show()
+    plt.plot(kk1[2], kk1[0], label="r=0.3")
+    plt.plot(kk2[2], kk2[0], label="r=1.2")
+    plt.plot(kk3[2], kk3[0], label="r=2.0")
+    plt.xlabel("t")
+    plt.legend(loc='best')
+    plt.tight_layout()
+    file_name = os.path.join(SAVE_PATH, "Regimenes")
+    plt.savefig(file_name, format='pdf')
+    plt.show()
 
 """
 Segunda parte del ejercicio
@@ -72,16 +82,28 @@ Segunda parte del ejercicio
 
 
 
+# kk = solve(2.0,1,10)
 
+r = 2.0
+T_c = np.pi / (2.0*2.0)
+# epsi = 1e-5
+# T = T_c + epsi
+T = 1
+epsi = T - T_c
 
-epsi = 1 - np.pi / (2*2)
+kk = solve(r,T,K=10,Nlim=100)
+
 plt.figure()
-plt.plot(t, N, label='Numerico')
-plt.plot(t, aproximacion(t, epsi), label=r'$\varepsilon={:.2f}$'.format(epsi))
-plt.plot(t, aproximacion(t, 1e-5), label=r'$\varepsilon=10^{-5}$')
+plt.plot(kk[2], kk[0], label='Numerico')
+plt.plot(kk[2], aproximacion(kk[2], epsi), label=r'$\varepsilon={:.2f}$'.format(epsi))
+# plt.plot(kk[2], aproximacion(kk[2], 1e-5), label=r'$\varepsilon=10^{-5}$')
 plt.legend(loc='best')
 plt.tight_layout()
-# os.path.join(SAVE_PATH, "Coweb_r={}".format(r))
-# plt.savefig()
+file_name = os.path.join(SAVE_PATH, "Comp_Analitica")
+plt.savefig(file_name, format='pdf')
 plt.show()
 
+
+if __name__ == "__main__":
+    a()
+    pass
