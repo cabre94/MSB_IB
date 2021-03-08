@@ -14,6 +14,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
+from scipy.signal import find_peaks
 import seaborn as sns
 sns.set()
 
@@ -81,29 +82,123 @@ Segunda parte del ejercicio
 """
 
 
+def b():
 
-# kk = solve(2.0,1,10)
+    r = 2.0
+    T_c = np.pi / (2.0*2.0)
+    # epsi = 1e-3
+    # T = T_c + epsi
+    T = 1
+    epsi = T - T_c  # Esto es un epsilon muy grande, preguntar
 
-r = 2.0
-T_c = np.pi / (2.0*2.0)
-# epsi = 1e-5
-# T = T_c + epsi
-T = 1
-epsi = T - T_c
+    kk = solve(r,T,K=10,Nlim=100)
 
-kk = solve(r,T,K=10,Nlim=100)
+    plt.figure()
+    plt.plot(kk[2], kk[0], label='Numerico')
+    plt.plot(kk[2], aproximacion(kk[2], epsi), label=r'$\varepsilon={:.2f}$'.format(epsi))
+    # plt.plot(kk[2], aproximacion(kk[2], 1e-5), label=r'$\varepsilon=10^{-5}$')
+    plt.legend(loc='best')
+    plt.tight_layout()
+    file_name = os.path.join(SAVE_PATH, "Comp_Analitica")
+    plt.savefig(file_name, format='pdf')
+    plt.show()
 
-plt.figure()
-plt.plot(kk[2], kk[0], label='Numerico')
-plt.plot(kk[2], aproximacion(kk[2], epsi), label=r'$\varepsilon={:.2f}$'.format(epsi))
-# plt.plot(kk[2], aproximacion(kk[2], 1e-5), label=r'$\varepsilon=10^{-5}$')
-plt.legend(loc='best')
-plt.tight_layout()
-file_name = os.path.join(SAVE_PATH, "Comp_Analitica")
-plt.savefig(file_name, format='pdf')
-plt.show()
+
+#
+def calcAmplitud(n0=2, r=2.0):
+    kk = solve(r=2.0, T=1.0, K=10.0,Nlim=100, N0=n0)
+    # mean = kk[0].mean()
+    rango = 1e-2
+    maximo = kk[0].max()
+    minimo = kk[0].min()
+
+    peaks, _ = find_peaks(kk[0], height=maximo-rango)
+    valleys, _ = find_peaks(-kk[0], height=-minimo-rango)
+    # Tiro el primero porque suele tener un pelin menos de amplitud
+    peaks = peaks[1:]
+    valleys = valleys[1:]
+
+
+    # plt.plot(kk[2], kk[0])
+    # plt.plot(kk[2][peaks], kk[0][peaks], "rx")
+    # plt.plot(kk[2][valleys], kk[0][valleys], "rx")
+    # # plt.plot(np.zeros_like(kk[0]), "--", color="gray")
+    # # plt.show()
+    # # plt.pause(3)
+    # plt.close()
+
+    if len(peaks) < len(valleys):
+        minlen = len(peaks)
+    else:
+        minlen = len(valleys)
+
+    amplitud = []
+    for i in range(minlen-1):
+
+        amplitud.append(abs(kk[0][peaks[i]] - kk[0][valleys[i]]))
+        amplitud.append(abs(kk[0][peaks[i]] - kk[0][valleys[i+1]]))
+    
+    # Ahora pasamos a calcular la frecuencia
+    periodo1 = kk[2][peaks[1:]] - kk[2][peaks[:-1]]
+    periodo2 = kk[2][valleys[1:]] - kk[2][valleys[:-1]]
+
+    periodo = 0.5 * (periodo1.mean() + periodo2.mean())
+    
+    # import ipdb; ipdb.set_trace(context=15)  # XXX BREAKPOINT
+
+    return np.array(amplitud).mean(), periodo
+
+
+def barridoCI():
+    valores = []
+    n0 = np.linspace(1,20,20)
+    n0 = n0[n0 != 10]
+    for N0 in n0:
+
+        if N0 == 10:
+            continue
+
+        # print(N0, end=' ')
+
+        A, _ = calcAmplitud(N0)
+
+        # print(A)
+
+        valores.append(A)
+
+    valores = np.array(valores)
+
+    plt.plot(n0, valores, 'o')
+    plt.show()
+
+def barrido_r():
+
+    rs = np.linspace(0.1,20,100)
+
+    periodos = []
+
+    for r in rs:
+
+        _, periodo = calcAmplitud(n0=2, r=r)
+
+        periodos.append(periodo)
+
+    periodos = np.array(periodos)
+
+    plt.plot(rs, periodos, 'o')
+    plt.show()
+
 
 
 if __name__ == "__main__":
-    a()
+    
+    # a()
+
+    # b()
+
+    # barridoCI()
+
+    barrido_r()
+
     pass
+    
