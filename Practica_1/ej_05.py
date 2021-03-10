@@ -19,8 +19,18 @@ def logisticModel(N,t,r,K):
     dNdt = r * N * (1 - N/K)
     return dNdt
 
-def getDisasterTime(p,l):
-    return -l*np.log(1-p)
+def getDisasterTime(q,l):
+    return -l*np.log(1-q)
+
+"""
+Calculo auxiliar
+"""
+n0_kk = np.linspace(0,15,16)
+t_kk = np.linspace(0,10,1000)
+for i in n0_kk:
+    n_kk = odeint(logisticModel, i, t_kk, args=(0.5,10.0))
+    plt.plot(t_kk, n_kk)
+plt.show()
 
 # pp = np.linspace(0,1-1e-8,1000)
 
@@ -30,6 +40,38 @@ def getDisasterTime(p,l):
 # El valor de K no importa mucho, es el valor al cual va a converger
 K = 10
 
-t_final = 100
+t_final = 50
 N0 = K/2
 
+r = 0.5     # 
+p = 0.9     # Fraccion en la que se reduce la poblacion en un desastre
+l = 10      # Mas grande, mas chande de sobrevivir
+
+N = np.array([])
+t_log = np.array([])
+
+t_current = 0
+
+while(t_current < t_final):
+
+    # Tomamos un numero aleatorio entre 0 y 1, con el que vamos a determinar
+    # el tiempo del siguiente desastre
+    q = np.random.random()
+
+    # Obtenemos el tiempo del siguiente desastre
+    t_disaster = getDisasterTime(q,l)
+
+    # Integro entre desastres
+    t = np.linspace(t_current, t_current+t_disaster, 1000)
+    n = odeint(logisticModel, N0, t , args=(r,K))
+
+    # Agregamos la evolucion a los datos guardados
+    N = np.append(N, n)
+    t_log = np.append(t_log, t)
+
+    # Aplicamos el efecto del desastre, cambiando las CI de la prox iteracion
+    N0 = N[-1]*p
+    t_current += t_disaster
+
+plt.plot(t_log, N)
+plt.show()
