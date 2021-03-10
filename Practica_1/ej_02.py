@@ -27,15 +27,15 @@ def model(N, t, r, K, N_T):
     dNdt = r * N * (1 - N_T / K)
     return dNdt
 
-# Solucion aproximada
-def aproximacion(t, epsi, C=1):
+# Solucion aproximada, la del enunciado esta adimensionalizada
+def aproximacion(t, epsi, C=-0.8, r=2.0, K=10.0):
 
     # Primer termino del choclo
-    pT = C * np.exp((epsi * t) / (1 + np.pi * np.pi * 0.25))
+    pT = C * np.exp((epsi * t * r) / (1 + np.pi * np.pi * 0.25))
     # Segundo termino del choclo
-    sT = np.cos(t * (1 - ((epsi * np.pi) / (2 * (1 + np.pi * np.pi * 0.25)))))
+    sT = np.cos(t * r * (1 - ((epsi * np.pi) / (2 * (1 + np.pi * np.pi * 0.25)))))
 
-    return 1 + pT * sT
+    return K * (1 + pT * sT)
 
 # Funcion que resuelve la ec. diferencial para un r, T y K dados
 def solve(r, T, K, ite=10001, Nlim=50, N0=2):
@@ -85,13 +85,13 @@ Segunda parte del ejercicio
 def b():
 
     r = 2.0
-    T_c = np.pi / (2.0*2.0)
-    # epsi = 1e-3
-    # T = T_c + epsi
-    T = 1
-    epsi = T - T_c  # Esto es un epsilon muy grande, preguntar
+    T_c = np.pi / (2.0*r)
+    epsi = 1e-3
+    T = T_c + epsi
+    # T = 1
+    # epsi = T - T_c  # Esto es un epsilon muy grande, preguntar
 
-    kk = solve(r,T,K=10,Nlim=100)
+    kk = solve(r,T,K=10,Nlim=1000)
 
     plt.figure()
     plt.plot(kk[2], kk[0], label='Numerico')
@@ -194,11 +194,11 @@ if __name__ == "__main__":
     
     # a()
 
-    # b()
+    b()
 
     # barridoCI()
 
-    barrido_r()
+    # barrido_r()
 
     pass
     
