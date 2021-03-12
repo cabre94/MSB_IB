@@ -20,17 +20,17 @@ def logisticModel(N,t,r,K):
     return dNdt
 
 def getDisasterTime(q,l):
-    return -l*np.log(1-q)
+    return -np.log(1-q) / l
 
 """
 Calculo auxiliar
 """
-n0_kk = np.linspace(0,15,16)
-t_kk = np.linspace(0,10,1000)
-for i in n0_kk:
-    n_kk = odeint(logisticModel, i, t_kk, args=(0.5,10.0))
-    plt.plot(t_kk, n_kk)
-plt.show()
+# n0_kk = np.linspace(0,15,16)
+# t_kk = np.linspace(0,10,1000)
+# for i in n0_kk:
+#     n_kk = odeint(logisticModel, i, t_kk, args=(1,10.0))
+#     plt.plot(t_kk, n_kk)
+# plt.show()
 
 # pp = np.linspace(0,1-1e-8,1000)
 
@@ -40,12 +40,13 @@ plt.show()
 # El valor de K no importa mucho, es el valor al cual va a converger
 K = 10
 
-t_final = 50
+t_final = 500
 N0 = K/2
+# N0 = K*2
 
-r = 0.5     # 
-p = 0.9     # Fraccion en la que se reduce la poblacion en un desastre
-l = 10      # Mas grande, mas chande de sobrevivir
+r = 1     # Mas grande -> + rapido evolucina -> + chance de sobrevivir 
+p = 0.5     # Fraccion que sobrevive
+l = 1.4       # 
 
 N = np.array([])
 t_log = np.array([])
