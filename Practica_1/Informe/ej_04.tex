@@ -1,0 +1,20 @@
+\section*{Ejercicio 4}
+\graphicspath{{Figuras/ej_04/}}
+
+Tenemos una especie con un ciclo de vida anual en la que cada individuo produce $r$ descendientes y luego muere, cuya evolución describimos como
+\begin{equation}
+    N_{t+1} = r N_{t}
+    \label{04_Modelo}
+\end{equation}
+y en donde $r$ obedece a una distribución de Poisson con media $1.7$.
+
+Simulando el sistema con 1 solo individuo como condición inicial, se observan tres comportamientos distintos según $r$ sea $0$, $1$ o mayor que $1$. Estos tres comportamientos pueden observarse en la Figura \ref{04_Simulacion}. Para $r>1$, la población crece en cada ciclo, mientras que si $r=1$ la población se mantiene, observándose escalones en la evolución de la especie, como se observa para $t$ entre 3 y 6 en la figura. Por ultimo, para el primer ciclo en donde $r=0$, la población se extingue y sin importar el valor de $r$ para iteraciones posteriores, se mantiene en $0$. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{Simulacion1.pdf}
+    \caption{Evolución del sistema para el modelo \ref{04_Modelo} en donde $r$ obedece a una distribución de Poisson con media $1.7$. Se observan tres comportamiento cualitativamente distintos. Para $r>1$, la población crece, para $r=1$ la población se mantiene y se observan escalones en la evolución del sistema y por ultimo para $r=0$ la especie se extingue.}
+    \label{04_Simulacion}
+\end{figure}
+
+En general, estudiando la evolucion del sistema a lo largo de 20 ciclos, se observa que la especie no logra sobrevivir. Veamos porque sucede esto. La densidad de probabilidad es $\frac{e^{-\lambda}\lambda^{k}}{k!}$, con lo cual la probabilidad de que en un ciclo $r$ sea $0$ es $e^{-1.7}\approx0.183$. Entonces, la probabilidad de que $r$ sea distinto de cero en 20 ciclos es $(1-e^{-1.7})^{20}\approx0.01769$. Es decir que la probabilidad de que la especie sobreviva luego de 20 ciclos es de $1.769\%$. Generando cien millones de simulaciones, se obtuvo que en un $1.767\%$ la especie logra sobrevivir, corroborando el calculo previamente descripto. 
