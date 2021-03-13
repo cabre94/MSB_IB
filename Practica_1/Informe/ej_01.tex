@@ -13,7 +13,7 @@ En donde para encontrar los puntos buscamos los $n^{*}$ tal que $f(n^{*}) = n^{*
     f^{'}(n_{t}) = \frac{r}{(1+\frac{r-1}{K}n)^{2}}
     \label{eq:Mapeo_Beverton-Holt}
 \end{equation}
-la cual evaluada en los puntos fijos obtenemos que $f'(n_{t}=0) = r$, con lo cual $n^{*}=0$ es estable si $|r|<1$ e inestable si $|r|>1$. Por otra parte, para $n^{*}=K$ obtenemos que $f'(n_{t}=K)=1$ con lo cual no podemos determinar la estabilidad solo con la derivada.
+la cual evaluada en los puntos fijos obtenemos que $f'(n_{t}=0) = r$, con lo cual $n^{*}=0$ es estable si $|r|<1$ e inestable si $|r|>1$. Por otra parte, para $n^{*}=K$ obtenemos que $f'(n_{t}=K)=\dfrac{1}{r}$ con lo cual es inestable si $|r|<1$ y estable si $|r|>1$.
 
 Pasemos a ver la el comportamiento del mapeo obtenido numéricamente. En la Figura \ref{01_Simulacion} se observa la evolución del sistema para distintas condiciones iniciales (todas positivas, ya que $n$ representa poblaciones) para $r=2$ y $K=1$, mientras que en la Figura \ref{01_Coweb} se observa un gráfico \textit{Coweb} para los mismos parámetros. De estos resultados se observa que $n^{*}=0$ es un equilibrio estable (acorde al hecho de que $|r|>1$) y $n^{*}=K=1$ es un equilibrio estable.
 
@@ -30,8 +30,7 @@ Pasemos a ver la el comportamiento del mapeo obtenido numéricamente. En la Figu
         \caption{}
         \label{01_Coweb}
     \end{subfigure}
-    \caption{Caption.}
-    %\caption{\centering Se observan las curvas para la función de costo y accuracy durante el entrenamiento, tanto para los datos de validación como para los de test. Se observa que aproximadamente a partir de la época 2000, la red comienza a presentar overfitting, disminuyendo su capacidad de generalización frente a datos con los cuales no es entrenada.}
+    \caption{Ene  la Figura (a) se observa la evolución del sistema para distintas condiciones iniciales para $r=2$ y $K=1$, mientras que en la Figura (b) se observa un gráfico \textit{Coweb} para los mismos parámetros.}
     \label{PONER_LABEL}
 \end{figure}
 
