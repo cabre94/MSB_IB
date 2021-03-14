@@ -3,7 +3,7 @@
 
 La ecuacnion logistica presenta dos puntos fijos, en $0$ y $K$.
 %  Si $r<0$, estos puntos son estables e inestables respectivamente, con lo cual la evolucion del sistema entre catastrofes es decreciente 
-Empecemos por el caso en donde $r > 0$, de manera que $0$ es un punto inestable y $K$ un punto estable. En esta situacion, el rango de valores que nos va a interesar estudiar sera entre 0 y $K$, que es donde la evolucion de la poblacion (entre catastrofes) crece, y cuyo crecimiento queremos estudiar si es suficiente como para sobrellevar las sucesivas redduciones de la pobalcion debido a las catastrofes . Para $N > K$, la poblacion decrece tendiendo a $K$, con lo cual esperamos que tarde o temprano la pobalcion caiga en el rango entre $0$ y $K$.
+Empecemos por el caso en donde $r > 0$, de manera que $0$ es un punto inestable y $K$ un punto estable. En esta situacion, el rango de valores que nos va a interesar estudiar sera entre 0 y $K$, que es donde la evolucion de la poblacion (entre catastrofes) crece, y queremos estudiar si este crecimiento es suficiente como para sobrellevar las sucesivas redduciones de la pobalcion debido a las catastrofes . Para $N > K$, la poblacion decrece tendiendo a $K$, con lo cual esperamos que tarde o temprano la pobalcion caiga en el rango entre $0$ y $K$.
 
 \begin{equation}
     N(t) = \frac{N_{0} K e^{rt}}{K+N_{0}(e^{rt}-1)}
@@ -22,8 +22,32 @@ De manera que, cuando la especie esta cerca de extinguirse, la población luego 
 \begin{equation}
     pe^{\frac{r}{\lambda}} > 1.
 \end{equation}
-Veamos esto numéricamente. 
 
-\rojo{Podria poner un poco men¿jor los indices como para diferenciar entre catastrofes y demas cosas.}
-\rojo{Poner una nota al pie con la aclaracion del p}
-\rojo{Poner resultados numericos}
+Para ver esto numericamente, vamos a tomar $r=1$ y $p=\dfrac{1}{e}\approx0.37$, es decir que la poblacion luego de una catastrofe se reduce a casi poco mas de un tercio. Con estos parametros, la condicion para que la especie sobreviva se reduce a $\lambda<1$. En la Figura \ref{05_ejercicio}, se observan las simulaciones obtenidas para tres valores de $\lambda$. Para $\lambda=0.9$, se observa que la poblacion, si bien en ciertos momentos presentan una reduccion, logra reestablecerse sin problema. Para $\lambda=0.95$ comienzan a observarse ciertos intervalos, como por ejemplo el intervalo $100<t<150$, en donde la poblacion esta cerca de extinguirse pero logra recuperarse ya que en el entorno a $N=0$ donde el comportamiento de la poblacion es lineal, esta crece. Por ultimo, para $\lambda=1.05$, en donde ya no se cumple la condicion para la supervivencia de la especie, se observa que una vez que la poblacion se encuentra por extinguirse, no logra recuperarse. 
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{l=0_9.pdf}
+        \caption{$\lambda=0.9$.}
+        \label{05_l_9}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{l=0_95.pdf}
+        \caption{$\lambda=0.95$.}
+        \label{05_l_95}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{l=1_05_1.pdf}
+        \caption{$\lambda=1.05$.}
+        \label{05_l_105}
+    \end{subfigure}
+    \caption{Se observa la simulacion del sistema para tres valores de $\lambda$. Para $\lambda=0.9$ se observa un comportamiento stocastico en donde si bien la poblacion presenta reducciones importantes, en ningun momento esta cerca de extinguirse. Para $\lambda=0.95$, se observa el intervalo $100<t<150$ en donde la poblacion es cercana a cero, pero logra recuperarse. Por ultimo, para $\lambda=1.05$, en donde el factor de la aproximacion lineal pasa a ser menor que 1, se observa que una vez que la poblacion esta cerca de extinguirse, no logra recuperarse.}
+    \label{05_ejercicio}
+\end{figure}
+
+% \rojo{Podria poner un poco men¿jor los indices como para diferenciar entre catastrofes y demas cosas.}
+% \rojo{Poner una nota al pie con la aclaracion del p}
+% \rojo{Poner resultados numericos}

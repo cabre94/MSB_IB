@@ -1,0 +1,60 @@
+\section*{Ejercicio 2}
+\graphicspath{{Figuras/ej_02/}}
+
+Tenemos la ecuacion logistica con retraso
+\begin{equation}
+    \frac{dN}{dt} = r N(t) \left[1- \frac{N(t-T)}{K}\right]
+\end{equation}
+la cual se resolvio numericamente usando diversos valores de los parametros. En la Figura \ref{02_ejercicio} se observa las simulaciones obtenidas para tres valores del parametro $r$: $0.3$, $1.2$ y $2$. En todos los casos $T=1$, $K=10$ y $N(t)=2$ para $-T < t \leq 0$. Para $r$ chicos ($r=0.3$), se observa que el sistema presenta un regimen monotono en donde la poblacion tiende al valor de $K$, como la ecuacion logistica. Luego, al aumentar $r$, primero se observan oscilaciones amortiguada y al seguir aumentando $r$ pasan a observarse oscilaciones sostenidas. Según \cite{Chule},  para $0<rT<e^{-1}$ el sistema posee un comportamiento monotono. Para $e^{-1} < rT < \dfrac{\pi}{2}$ el sistema presenta oscilaciones amortiguadas y por ultimo para $\dfrac{\pi}{2} < rT$ se obtienen oscilaciones sostenidas.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{Regimenes.pdf}
+    \caption{Resolucion numerica para la ecuacion logistica con retraso variando el parametro $r$. Se observan los regimenes monótono, oscilatorio amortiguado y oscilatorio sostenido para $r$ igual a $0.3$, $1.2$ y $2$, respectivamente. $T=1$, $K=10$ y $N(t)=2$ para $-T < t \leq 0$.}
+    \label{02_ejercicio}
+\end{figure}
+
+Tenemos una aproximacion analitica para cuando $T$ es un poco mayor que que el valor critico $T_c = \nicefrac{\pi}{2r}$, la cual viene dada por
+\begin{equation}
+    N(t) \approx K + C e^{ \frac{\epsilon t}{1 + \nicefrac{\pi^{2}}{4}} } e^{it \left[ 1- \frac{\epsilon \pi}{2 ( 1 + \nicefrac{\pi^{2}}{4})} \right]}
+    \label{02_Ec_Aproximada}
+\end{equation}
+en donde $T = T_c + \epsilon$ (es decir que la aproximacion es valida para el regimen de oscilaciones sostenidas). En la Figura \ref{02_Comp_Analitica} se observa una comparacion entre la simulacion numerica y la solucion aproximada valida para $r=2$ y $\epsilon=0.01$. Se observa que la solucion analitica aproximada no logra reproducir correctamente la amplitud de las oscilaciones, pero si es posible estimar el periodo de las mismas. En particular, debido al termino $e^{ \frac{\epsilon t}{1 + \nicefrac{\pi^{2}}{4}} }$ de la Ec. \ref{02_Ec_Aproximada}, la solucion aproximada diverge para $t\rightarrow \infty$.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{Comp_Analitica_2.pdf}
+        \caption{}
+        \label{02_Comp_Analitica}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{Amplitud_r=2.0.pdf}
+        \caption{}
+        \label{02_Picos}
+    \end{subfigure}
+    \caption{En (a) se observa una comparacion entre la simulacion numerica y la solucion aproximada valida para el regimen de oscilaciones sostenidas para $r=2$ y $\epsilon=0.01$. Se observa que la solucion analitica aproximada no logra reproducir correctamente la amplitud de las oscilaciones, pero si es posible estimar el periodo de las mismas. En (b), se observa una simulacion y la obtencion de los picos y valles de las oscilaciones para el calculo de la amplitud de las oscilaciones y su periodo.}
+    \label{02_ejercicio}
+\end{figure}
+
+Luego se procedió a verificar que la amplitud de las oscilaciones es independiente de las condiciones iniciales y que el periodo de las oscilaciones es independiente de $r$. Para ambos casos, se realizo una simulacion variando la condicion inicial o $r$ segun corresponda y se obtuvieron los picos y valles de las oscilaciones para determinar la amplitud y periodo. Un ejemplo del resultado obtenido puede observarse en la Figura \ref{02_Picos}.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{Amplitud_Barrido.pdf}
+        \caption{}
+        \label{02_Barrido_CI}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{Periodo_Barrido.pdf}
+        \caption{}
+        \label{02_Barrido_r}
+    \end{subfigure}
+    \caption{.}
+    \label{02_Resutados_Barridos}
+\end{figure}
+
+En la Figura \ref{02_Barrido_CI} se observa el valor obtenido de las distintas amplitudes en funcion de las distintas condiciones iniciales. Se observa que la amplitud presenta pequeñas variaciones del orden de $7\times 10^{-4}$. Por otro lado, como puede observarse en la Figura \ref{02_Barrido_r}, el periodo de las oscilaciones no son invariantes respecto al valor de $r$.
