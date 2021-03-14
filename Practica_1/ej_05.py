@@ -14,39 +14,35 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
+import seaborn as sns
+sns.set()
 
+SAVE_PATH = os.path.join("Figuras", "ej_05")
+if not os.path.exists(SAVE_PATH):
+    os.makedirs(SAVE_PATH)
+
+# Ecuacion del modelo logistico
 def logisticModel(N,t,r,K):
     dNdt = r * N * (1 - N/K)
     return dNdt
 
+# Funcion para obtener el tiempo de un desastre
 def getDisasterTime(q,l):
     return -np.log(1-q) / l
 
-"""
-Calculo auxiliar
-"""
-# n0_kk = np.linspace(0,15,16)
-# t_kk = np.linspace(0,10,1000)
-# for i in n0_kk:
-#     n_kk = odeint(logisticModel, i, t_kk, args=(1,10.0))
-#     plt.plot(t_kk, n_kk)
-# plt.show()
+# Definimos algunas constantes
+K = 10      # El valor de K no importa mucho, es el valor al cual va a converger
+N0 = K/2    # Condicion inicial
 
-# pp = np.linspace(0,1-1e-8,1000)
+t_final = 250   # Cuanto tiempo vamos a iterar
 
-# plt.plot(pp, getDisasterTime(pp, 0.5))
-# plt.show()
-
-# El valor de K no importa mucho, es el valor al cual va a converger
-K = 10
-
-t_final = 500
-N0 = K/2
-# N0 = K*2
-
-r = 1     # Mas grande -> + rapido evolucina -> + chance de sobrevivir 
-p = 0.5     # Fraccion que sobrevive
-l = 1.4       # 
+# La relacion que tiene que cumplir r, p, y l para que la especie sobreviva es
+# p * np.exp(r / l) > 1
+r = 1            # Mas grande -> + rapido evolucina -> + chance de sobrevivir 
+p = np.e**-1     # Fraccion que sobrevive
+# Con r = 1 y p = 1/e la condicion para lambda (l) se reduce a
+# l > 1
+l = 0.95
 
 N = np.array([])
 t_log = np.array([])
@@ -75,4 +71,9 @@ while(t_current < t_final):
     t_current += t_disaster
 
 plt.plot(t_log, N)
+plt.xlabel(r"$t$")
+plt.ylabel(r"$N(t)$")
+plt.tight_layout()
+file_name = os.path.join(SAVE_PATH, "l={}.pdf".format(l))
+plt.savefig(file_name, format='pdf')
 plt.show()

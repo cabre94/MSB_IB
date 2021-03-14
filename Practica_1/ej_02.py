@@ -18,7 +18,7 @@ from scipy.signal import find_peaks
 import seaborn as sns
 sns.set()
 
-SAVE_PATH = "Figuras/Ej_02"
+SAVE_PATH = "Informe/Figuras/ej_02"
 if not os.path.exists(SAVE_PATH):
     os.makedirs(SAVE_PATH)
 
@@ -38,7 +38,7 @@ def aproximacion(t, epsi, C=-0.8, r=2.0, K=10.0):
     return K * (1 + pT * sT)
 
 # Funcion que resuelve la ec. diferencial para un r, T y K dados
-def solve(r, T, K, ite=10001, Nlim=50, N0=2):
+def solve(r, T, K, ite=100001, Nlim=50, N0=2):
 
     t = np.linspace(0,Nlim,ite)
     N = np.zeros_like(t)
@@ -71,44 +71,45 @@ def a():
     plt.plot(kk2[2], kk2[0], label="r=1.2")
     plt.plot(kk3[2], kk3[0], label="r=2.0")
     plt.xlabel("t")
-    plt.legend(loc='best')
+    plt.ylabel(r"$N(t)$")
+    plt.legend(loc='upper right')
     plt.tight_layout()
-    file_name = os.path.join(SAVE_PATH, "Regimenes")
+    file_name = os.path.join(SAVE_PATH, "Regimenes.pdf")
     plt.savefig(file_name, format='pdf')
     plt.show()
 
 """
 Segunda parte del ejercicio
 """
-
-
 def b():
 
     r = 2.0
     T_c = np.pi / (2.0*r)
-    epsi = 1e-3
+    epsi = 1e-2
     T = T_c + epsi
     # T = 1
     # epsi = T - T_c  # Esto es un epsilon muy grande, preguntar
 
-    kk = solve(r,T,K=10,Nlim=1000)
+    kk = solve(r,T,K=10,Nlim=100)
 
     plt.figure()
     plt.plot(kk[2], kk[0], label='Numerico')
-    plt.plot(kk[2], aproximacion(kk[2], epsi), label=r'$\varepsilon={:.2f}$'.format(epsi))
+    plt.plot(kk[2], aproximacion(kk[2], epsi), label=r'$\varepsilon={:.0e}$'.format(epsi))
     # plt.plot(kk[2], aproximacion(kk[2], 1e-5), label=r'$\varepsilon=10^{-5}$')
+    plt.xlabel("t")
+    plt.ylabel(r"$N(t)$")
     plt.legend(loc='best')
     plt.tight_layout()
-    file_name = os.path.join(SAVE_PATH, "Comp_Analitica")
+    file_name = os.path.join(SAVE_PATH, "Comp_Analitica_2.pdf")
     plt.savefig(file_name, format='pdf')
     plt.show()
 
 
-#
+# Funcion que simula el sistema y calcula la amplitud de las oscilaciones
 def calcAmplitud(n0=2, r=2.0):
-    kk = solve(r=2.0, T=1.0, K=10.0,Nlim=100, N0=n0)
+    kk = solve(r, T=1.0, K=10.0,Nlim=200, N0=n0)
     # mean = kk[0].mean()
-    rango = 1e-2
+    rango = 1e-1
     maximo = kk[0].max()
     minimo = kk[0].min()
 
@@ -119,13 +120,19 @@ def calcAmplitud(n0=2, r=2.0):
     valleys = valleys[1:]
 
 
-    # plt.plot(kk[2], kk[0])
-    # plt.plot(kk[2][peaks], kk[0][peaks], "rx")
-    # plt.plot(kk[2][valleys], kk[0][valleys], "rx")
-    # # plt.plot(np.zeros_like(kk[0]), "--", color="gray")
-    # # plt.show()
-    # # plt.pause(3)
-    # plt.close()
+    plt.plot(kk[2], kk[0])
+    plt.plot(kk[2][peaks], kk[0][peaks], "rx")
+    plt.plot(kk[2][valleys], kk[0][valleys], "rx")
+    # plt.plot(np.zeros_like(kk[0]), "--", color="gray")
+    plt.xlabel("t")
+    plt.ylabel(r"$N(t)$")
+    # plt.legend(loc='best')
+    plt.tight_layout()
+    file_name = os.path.join(SAVE_PATH, "Amplitud_r={}.pdf".format(r))
+    plt.savefig(file_name, format='pdf')
+    # plt.show()
+    plt.pause(1)
+    plt.close()
 
     if len(peaks) < len(valleys):
         minlen = len(peaks)
@@ -142,7 +149,8 @@ def calcAmplitud(n0=2, r=2.0):
     periodo1 = kk[2][peaks[1:]] - kk[2][peaks[:-1]]
     periodo2 = kk[2][valleys[1:]] - kk[2][valleys[:-1]]
 
-    periodo = 0.5 * (periodo1.mean() + periodo2.mean())
+    # periodo = 0.5 * (periodo1.mean() + periodo2.mean())
+    periodo = periodo1.mean()
     
     # import ipdb; ipdb.set_trace(context=15)  # XXX BREAKPOINT
 
@@ -169,23 +177,59 @@ def barridoCI():
     valores = np.array(valores)
 
     plt.plot(n0, valores, 'o')
+    plt.xlabel("Condicion inicial")
+    plt.ylabel("Amplitud")
+    # plt.legend(loc='best')
+    plt.tight_layout()
+    file_name = os.path.join(SAVE_PATH, "Amplitud_Barrido.pdf")
+    plt.savefig(file_name, format='pdf')
     plt.show()
+
+def calcularPeriodo(r=2.0):
+
+    epsi = 1e-8
+    t = np.linspace(0,200, 10000)
+    kk = aproximacion(t, epsi, C=-0.8, r=r, K=10.0)
+
+    peaks, _ = find_peaks(kk)
+
+    plt.plot(t, kk)
+    plt.plot(t[peaks], kk[peaks], "rx")
+    plt.show()
+
+    periodos = t[peaks[1:]] - t[peaks[:-1]]
+
+    # import ipdb; ipdb.set_trace(context=15)  # XXX BREAKPOINT
+
+    return periodos.mean()
+
+
 
 def barrido_r():
 
-    rs = np.linspace(0.1,20,100)
+    rs = np.linspace(2.0,3.5,16)
 
     periodos = []
 
     for r in rs:
 
         _, periodo = calcAmplitud(n0=2, r=r)
+        # periodo = calcularPeriodo(r)
 
         periodos.append(periodo)
+
+        print(r," ", periodo)
+
 
     periodos = np.array(periodos)
 
     plt.plot(rs, periodos, 'o')
+    plt.xlabel("r")
+    plt.ylabel("Periodo")
+    # plt.legend(loc='best')
+    plt.tight_layout()
+    file_name = os.path.join(SAVE_PATH, "Periodo_Barrido.pdf")
+    plt.savefig(file_name, format='pdf')
     plt.show()
 
 
@@ -194,11 +238,10 @@ if __name__ == "__main__":
     
     # a()
 
-    b()
+    # b()
 
     # barridoCI()
 
-    # barrido_r()
+    barrido_r()
 
-    pass
-    
+    # calcularPeriodo()

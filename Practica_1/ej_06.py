@@ -32,16 +32,18 @@ def modelAlleeEffect(N, t, r, K, A):
 def a(r=0.5, K=10, A=6):
     N0 = np.linspace(0, 15, 16)
     # N0 = np.linspace(0,15,31)
-    t = np.linspace(0, 15, 10000)
+    t = np.linspace(0, 10, 10000)
 
     for n0 in N0:
         N = odeint(modelAlleeEffect, N0, t, args=(r, K, A))
 
-        plt.plot(t, N, "--")
+        plt.plot(t, N, "-")
 
     plt.xlabel("t")
     plt.ylabel("N(t)")
     plt.tight_layout()
+    file_name = os.path.join(SAVE_PATH, "Simulacion.pdf")
+    plt.savefig(file_name, format='pdf')
     plt.show()
 
 
@@ -52,14 +54,23 @@ def b(r=0.5, K=10, A=6):
     plt.plot(N, dNdt)
     plt.scatter([0, K, A], [0, 0, 0], s=80, facecolors="none", edgecolors="r")
     plt.scatter([0, K], [0, 0], s=80, facecolors="r", edgecolors="r")
-    # plt.arrow(0, 0, A / 2, 0, head_width=0.02, head_length=0.5, fc="k", ec="k")
+    # plt.arrow(0, 0, A-0.3, 0, head_width=0.03, head_length=0.3, fc="k", ec="k")
+    plt.arrow(A, 0, -A+0.3, 0, head_width=0.03, head_length=0.3, fc="k", ec="k")
+    plt.arrow(A, 0, -A/2+0.3, 0, head_width=0.03, head_length=0.3, fc="k", ec="k")
+    plt.arrow(A, 0, K-A-0.3, 0, head_width=0.03, head_length=0.3, fc="k", ec="k")
+    plt.arrow(A, 0, (K-A)/2-0.3, 0, head_width=0.03, head_length=0.3, fc="k", ec="k")
+    plt.arrow(K+1, 0, -1+0.3, 0, head_width=0.03, head_length=0.3, fc="k", ec="k")
+    # plt.arrow(A, 0, K-A-0.3, 0, head_width=0.03, head_length=0.3, fc="k", ec="k")
+    # plt.arrow(0, 0, A, 0, head_width=0.02, head_length=0.5, fc="k", ec="k")
     plt.xlabel(r"$N(t)$")
     plt.ylabel(r"$\dot{N}(t)$")
     plt.tight_layout()
+    file_name = os.path.join(SAVE_PATH, "f.pdf")
+    plt.savefig(file_name, format='pdf')
     plt.show()
 
 if __name__ == "__main__":
     
-    a()
+    # a(r=1)
 
-    b()
+    b(r=1)
