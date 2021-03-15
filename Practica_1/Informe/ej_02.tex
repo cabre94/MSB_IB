@@ -7,9 +7,9 @@ Tenemos la ecuación logística con retraso
 \end{equation}
 la cual se resolvió numéricamente usando diversos valores de los parámetros. En la Figura \ref{02_ejercicio} se observa las simulaciones obtenidas para tres valores del parámetro $r$: $0.3$, $1.2$ y $2$. En todos los casos $T=1$, $K=10$ y $N(t)=2$ para $-T < t \leq 0$. Para $r$ chicos ($r=0.3$), se observa que el sistema presenta un régimen monótono en donde la población tiende al valor de $K$, como la ecuación logística. Luego, al aumentar $r$, primero se observan oscilaciones amortiguada y al seguir aumentando $r$ pasan a observarse oscilaciones sostenidas. Según \cite{Chule},  para $0<rT<e^{-1}$ el sistema posee un comportamiento monótono. Para $e^{-1} < rT < \dfrac{\pi}{2}$ el sistema presenta oscilaciones amortiguadas y por ultimo para $\dfrac{\pi}{2} < rT$ se obtienen oscilaciones sostenidas.
 
-\begin{figure}
+\begin{figure}[h!]
     \centering
-    \includegraphics[width=0.6\textwidth]{Regimenes.pdf}
+    \includegraphics[width=0.5\textwidth]{Regimenes.pdf}
     \caption{Resolución numérica para la ecuación logística con retraso variando el parámetro $r$. Se observan los regímenes monótono, oscilatorio amortiguado y oscilatorio sostenido para $r$ igual a $0.3$, $1.2$ y $2$, respectivamente. $T=1$, $K=10$ y $N(t)=2$ para $-T < t \leq 0$.}
     \label{02_ejercicio}
 \end{figure}
@@ -21,7 +21,7 @@ Tenemos una aproximación analítica para cuando $T$ es un poco mayor que que el
 \end{equation}
 en donde $T = T_c + \epsilon$ (es decir que la aproximación es valida para el régimen de oscilaciones sostenidas). En la Figura \ref{02_Comp_Analitica} se observa una comparación entre la simulación numérica y la solución aproximada valida para $r=2$ y $\epsilon=0.01$. Se observa que la solución analítica aproximada no logra reproducir correctamente la amplitud de las oscilaciones, pero si es posible estimar el periodo de las mismas. En particular, debido al termino $e^{ \frac{\epsilon t}{1 + \nicefrac{\pi^{2}}{4}} }$ de la Ec. \ref{02_Ec_Aproximada}, la solución aproximada diverge para $t\rightarrow \infty$.
 
-\begin{figure}
+\begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{Comp_Analitica_2.pdf}
@@ -40,7 +40,7 @@ en donde $T = T_c + \epsilon$ (es decir que la aproximación es valida para el r
 
 Luego se procedió a verificar que la amplitud de las oscilaciones es independiente de las condiciones iniciales y que el periodo de las oscilaciones es independiente de $r$. Para ambos casos, se realizo una simulación variando la condición inicial o $r$ según corresponda y se obtuvieron los picos y valles de las oscilaciones para determinar la amplitud y periodo. Un ejemplo del resultado obtenido puede observarse en la Figura \ref{02_Picos}.
 
-\begin{figure}
+\begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{Amplitud_Barrido.pdf}
@@ -53,7 +53,7 @@ Luego se procedió a verificar que la amplitud de las oscilaciones es independie
         \caption{}
         \label{02_Barrido_r}
     \end{subfigure}
-    \caption{.}
+    \caption{En (a) se observa el valor obtenido de las distintas amplitudes en función de las distintas condiciones iniciales. Se observa que la amplitud presenta pequeñas variaciones del orden de $7\times 10^{-4}$. Por otro lado, como puede observarse en (b), el periodo de las oscilaciones no son invariantes respecto al valor de $r$.}
     \label{02_Resutados_Barridos}
 \end{figure}
 
