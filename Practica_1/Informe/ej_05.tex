@@ -1,31 +1,29 @@
 \section*{Ejercicio 5}
 \graphicspath{{Figuras/ej_05/}}
 
-La ecuacnion logistica presenta dos puntos fijos, en $0$ y $K$.
+La ecuación logística presenta dos puntos fijos, en $0$ y $K$.
 %  Si $r<0$, estos puntos son estables e inestables respectivamente, con lo cual la evolucion del sistema entre catastrofes es decreciente 
-Empecemos por el caso en donde $r > 0$, de manera que $0$ es un punto inestable y $K$ un punto estable. En esta situacion, el rango de valores que nos va a interesar estudiar sera entre 0 y $K$, que es donde la evolucion de la poblacion (entre catastrofes) crece, y queremos estudiar si este crecimiento es suficiente como para sobrellevar las sucesivas redduciones de la pobalcion debido a las catastrofes . Para $N > K$, la poblacion decrece tendiendo a $K$, con lo cual esperamos que tarde o temprano la pobalcion caiga en el rango entre $0$ y $K$.
+Tomamos el caso en donde $r > 0$, de manera que $0$ es un punto inestable y $K$ un punto estable. En esta situación, el rango de valores que nos va a interesar estudiar sera entre 0 y $K$, que es donde la evolución de la población (entre catástrofes) crece, y queremos estudiar si este crecimiento es suficiente como para sobrellevar las sucesivas reducciones de la población debido a las catástrofes . Para $N > K$, la población decrece tendiendo a $K$, con lo cual esperamos que tarde o temprano la población caiga en el rango entre $0$ y $K$.
 
 \begin{equation}
     N(t) = \frac{N_{0} K e^{rt}}{K+N_{0}(e^{rt}-1)}
     \label{eq:Logistica_Sol_Exacta}
 \end{equation}
 
-Veamos si podemos obtener una condicion para la cual la especie que estamos modelando puede sobrevivir. Tenemos que los desastres ocurren con una frecuencia promedio $\lambda$, con lo cual el tiempo promedio entre desastres es $\dfrac{1}{\lambda}$. Entonces, utilizando la solución exacta del modelo logistico dada por la Ec. \ref{eq:Logistica_Sol_Exacta}, podemos obtener cuanto logra recuperarse la especie entre catastrofes, en promedio, tomando $t=\dfrac{1}{\lambda}$. Entonces
+Veamos si podemos obtener una condición para la cual la especie que estamos modelando puede sobrevivir. Tenemos que los desastres ocurren con una frecuencia promedio $\lambda$, con lo cual el tiempo promedio entre desastres es $\dfrac{1}{\lambda}$. Entonces, utilizando la solución exacta del modelo logístico dada por la Ec. \ref{eq:Logistica_Sol_Exacta}, podemos obtener cuanto logra recuperarse la especie entre catástrofes, en promedio, tomando $t=\dfrac{1}{\lambda}$. Entonces
 \begin{equation}
     N(t=\frac{1}{\lambda}) = \frac{pN_{0} K e^{\frac{r}{\lambda}}}{K+N_{0}(e^{\frac{r}{\lambda}}-1)} = \frac{pN_{0} e^{\frac{r}{\lambda}}}{1+N_{0}\frac{e^{\frac{r}{\lambda}}-1}{K}} 
 \end{equation}
-en donde $N_{0}$ es el valor de la poblacion inmediatamente despues de la ultima catastrofe y en donde ya aplicamos el factor $p$ correspondiente a la la siguiente catastrofe. Esta ecuacion nos dice, en promedio, cuanto aumenta la poblacion entre dos catastrofes. En particular, para analizar si la especie sobrevive o no, nos puede resultar mas util estudiar la situacion critica en donde $N_{0}$ es muy chico, ya que si la especie se extingue es esperable encontrarse en esta situacion tarde o temprano. En este caso, podemos aproximar el denominador por 1 ya que $\frac{1}{1+ax} \approx 1 + ax + \mathcal{O}(x^2)$, con lo cual nos queda que el cambio en la poblacion de la especie entre cada catastrofe es, en promedio,
+en donde $N_{0}$ es el valor de la población inmediatamente después de la ultima catástrofe y en donde ya aplicamos el factor $p$ correspondiente a la la siguiente catástrofe. Esta ecuación nos dice, en promedio, cuanto aumenta la población entre dos catástrofes. En particular, para analizar si la especie sobrevive o no, nos puede resultar mas util estudiar la situación critica en donde $N_{0}$ es muy chico, ya que si la especie se extingue es esperable encontrarse en esta situación tarde o temprano. En este caso, podemos aproximar el denominador por 1 ya que $\frac{1}{1+ax} \approx 1 + ax + \mathcal{O}(x^2)$, con lo cual nos queda que el cambio en la población de la especie entre cada catástrofe es, en promedio,
 \begin{equation}
     N(t) = pe^{\dfrac{r}{\lambda}N_{0}}.
 \end{equation}
-De manera que, cuando la especie esta cerca de extinguirse, la población luego de una catastrofe en proporcional a la pobalcion luego de la catastrofe anterior, en un factor $pe^{\dfrac{r}{\lambda}}$. Entonces, lo que determina que la especie sobreviva o no, sera este factor. Si es menor que 1, cuando la pobalcion esta cerca de la extincion, el sistema siempre seguira decreciendo, con lo cual la extencion es inevitable. En cambio, si este factor es mayor que 1, la poblacion crecera cuando este cerca de la extinción. De manera que la condicion para recuperarse de un desastre sera
+De manera que, cuando la especie esta cerca de extinguirse, la población luego de una catástrofe en proporcional a la población luego de la catástrofe anterior, en un factor $pe^{\dfrac{r}{\lambda}}$. Entonces, lo que determina que la especie sobreviva o no, sera este factor. Si es menor que 1, cuando la población esta cerca de la extinción, el sistema siempre seguirá decreciendo, con lo cual la extension es inevitable. En cambio, si este factor es mayor que 1, la población crecerá cuando este cerca de la extinción. De manera que la condición para recuperarse de un desastre sera
 \begin{equation}
     pe^{\frac{r}{\lambda}} > 1.
 \end{equation}
 
-Para ver esto numericamente, vamos a tomar $r=1$ y $p=\dfrac{1}{e}\approx0.37$, es decir que la poblacion luego de una catastrofe se reduce a casi poco mas de un tercio. Con estos parametros, la condicion para que la especie sobreviva se reduce a $\lambda<1$. En la Figura \ref{05_ejercicio}, se observan las simulaciones obtenidas para tres valores de $\lambda$. Para $\lambda=0.9$, se observa que la poblacion, si bien en ciertos momentos presentan una reduccion, logra reestablecerse sin problema. Para $\lambda=0.95$ comienzan a observarse ciertos intervalos, como por ejemplo el intervalo $100<t<150$, en donde la poblacion esta cerca de extinguirse pero logra recuperarse ya que en el entorno a $N=0$ donde el comportamiento de la poblacion es lineal, esta crece. Por ultimo, para $\lambda=1.05$, en donde ya no se cumple la condicion para la supervivencia de la especie, se observa que una vez que la poblacion se encuentra por extinguirse, no logra recuperarse. 
-
-\begin{figure}
+\begin{figure}[hb!]
     \centering
     \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{l=0_9.pdf}
@@ -44,9 +42,13 @@ Para ver esto numericamente, vamos a tomar $r=1$ y $p=\dfrac{1}{e}\approx0.37$, 
         \caption{$\lambda=1.05$.}
         \label{05_l_105}
     \end{subfigure}
-    \caption{Se observa la simulacion del sistema para tres valores de $\lambda$. Para $\lambda=0.9$ se observa un comportamiento stocastico en donde si bien la poblacion presenta reducciones importantes, en ningun momento esta cerca de extinguirse. Para $\lambda=0.95$, se observa el intervalo $100<t<150$ en donde la poblacion es cercana a cero, pero logra recuperarse. Por ultimo, para $\lambda=1.05$, en donde el factor de la aproximacion lineal pasa a ser menor que 1, se observa que una vez que la poblacion esta cerca de extinguirse, no logra recuperarse.}
+    \caption{Se observa la simulación del sistema para tres valores de $\lambda$. Para $\lambda=0.9$ se observa un comportamiento estocástico en donde si bien la población presenta reducciones importantes, en ningún momento esta cerca de extinguirse. Para $\lambda=0.95$, se observa el intervalo $100<t<150$ en donde la población es cercana a cero, pero logra recuperarse. Por ultimo, para $\lambda=1.05$, en donde el factor de la aproximación lineal pasa a ser menor que 1, se observa que una vez que la población esta cerca de extinguirse, no logra recuperarse.}
     \label{05_ejercicio}
 \end{figure}
+
+Para ver esto numéricamente, vamos a tomar $r=1$ y $p=\dfrac{1}{e}\approx0.37$, es decir que la población luego de una catástrofe se reduce a casi poco mas de un tercio. Con estos parámetros, la condición para que la especie sobreviva se reduce a $\lambda<1$. En la Figura \ref{05_ejercicio}, se observan las simulaciones obtenidas para tres valores de $\lambda$. Para $\lambda=0.9$, se observa que la población, si bien en ciertos momentos presentan una reducción, logra restablecerse sin problema. Para $\lambda=0.95$ comienzan a observarse ciertos intervalos, como por ejemplo el intervalo $100<t<150$, en donde la población esta cerca de extinguirse pero logra recuperarse ya que en el entorno a $N=0$ donde el comportamiento de la población es lineal, esta crece. Por ultimo, para $\lambda=1.05$, en donde ya no se cumple la condición para la supervivencia de la especie, se observa que una vez que la población se encuentra por extinguirse, no logra recuperarse. 
+
+
 
 % \rojo{Podria poner un poco men¿jor los indices como para diferenciar entre catastrofes y demas cosas.}
 % \rojo{Poner una nota al pie con la aclaracion del p}
